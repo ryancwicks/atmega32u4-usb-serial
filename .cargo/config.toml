@@ -2,7 +2,7 @@
 target = "avr-atmega32u4.json"
 
 [target.'cfg(target_arch = "avr")']
-runner = "./leonardo-runner.sh"
+runner = "ravedude leonardo"
 
 [unstable]
 build-std = ["core"]
