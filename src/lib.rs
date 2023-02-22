@@ -112,11 +112,12 @@ impl ufmt::uWrite for UsbSerial {
     type Error = ();
 
     fn write_str(&mut self, s: &str) -> Result<(), Self::Error> {
-        if unsafe { usb_serial_write(s.as_ptr(), s.len() as u16) == 0 } {
-            Ok(())
-        } else {
-            Err(())
+        for c in s.chars() {
+            if unsafe { usb_serial_putchar(c as u8) == 0 } {
+                return Err(());
+            }
         }
+        Ok(())
     }
 }
 
