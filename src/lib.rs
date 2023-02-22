@@ -112,10 +112,17 @@ impl ufmt::uWrite for UsbSerial {
     type Error = ();
 
     fn write_str(&mut self, s: &str) -> Result<(), Self::Error> {
-        for c in s.chars() {
-            if unsafe { usb_serial_putchar(c as u8) == 0 } {
-                return Err(());
+
+        let write = |c: u8| -> nb::Result<(), Self::Error> {
+            if unsafe { usb_serial_putchar(c) == 0 } {
+                Ok(())
+            } else {
+                Err(nb::Error::WouldBlock)
             }
+        };
+
+        for c in s.chars() {
+            nb::block!(write(c as u8)).unwrap()
         }
         Ok(())
     }
