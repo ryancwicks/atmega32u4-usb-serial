@@ -4,6 +4,9 @@ version = "0.1.1"
 authors = ["Michael Mogenson <michael.mogenson@gmail.com>"]
 edition = "2021"
 
+test = false
+bench = false
+
 [features]
 default = ["rt"]
 rt = ["avr-device/rt"]
